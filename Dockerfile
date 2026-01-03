@@ -23,16 +23,17 @@ RUN dotnet publish Delab.Frontend/Delab.Frontend.csproj -c Release -o frontend-o
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS backend-build
 WORKDIR /app
 
-# Copiar archivos de solución
+# Copiar TODOS los archivos .csproj primero
 COPY Delab.sln ./
 COPY Delab.AccessData/*.csproj ./Delab.AccessData/
 COPY Delab.AccessService/*.csproj ./Delab.AccessService/
 COPY Delab.Helpers/*.csproj ./Delab.Helpers/
 COPY Delab.Shared/*.csproj ./Delab.Shared/
 COPY Delab.Backend/*.csproj ./Delab.Backend/
+COPY Delab.Frontend/*.csproj ./Delab.Frontend/
 
-# Restaurar dependencias
-RUN dotnet restore
+# Restaurar dependencias del Backend específicamente
+RUN dotnet restore Delab.Backend/Delab.Backend.csproj
 
 # Copiar código fuente
 COPY Delab.AccessData/ ./Delab.AccessData/
