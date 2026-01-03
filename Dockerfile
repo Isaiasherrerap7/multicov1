@@ -2,16 +2,18 @@
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS frontend-build
 WORKDIR /app
 
-# Copiar archivos de dependencias
+# Copiar archivos de dependencias (csproj)
 COPY Delab.sln ./
 COPY Delab.Shared/*.csproj ./Delab.Shared/
+COPY Delab.AccessService/*.csproj ./Delab.AccessService/
 COPY Delab.Frontend/*.csproj ./Delab.Frontend/
 
 # Restaurar dependencias del Frontend
 RUN dotnet restore Delab.Frontend/Delab.Frontend.csproj
 
-# Copiar código fuente del Frontend
+# Copiar código fuente
 COPY Delab.Shared/ ./Delab.Shared/
+COPY Delab.AccessService/ ./Delab.AccessService/
 COPY Delab.Frontend/ ./Delab.Frontend/
 
 # Publicar Frontend en Release
