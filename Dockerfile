@@ -1,5 +1,5 @@
 # Multi-stage build para Frontend Blazor WASM
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS frontend-build
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS frontend-build
 WORKDIR /app
 
 # Copiar archivos de dependencias
@@ -18,7 +18,7 @@ COPY Delab.Frontend/ ./Delab.Frontend/
 RUN dotnet publish Delab.Frontend/Delab.Frontend.csproj -c Release -o frontend-out
 
 # Multi-stage build para Backend ASP.NET Core
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS backend-build
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS backend-build
 WORKDIR /app
 
 # Copiar archivos de solución
@@ -43,7 +43,7 @@ COPY Delab.Backend/ ./Delab.Backend/
 RUN dotnet publish Delab.Backend/Delab.Backend.csproj -c Release -o backend-out
 
 # Runtime stage final
-FROM mcr.microsoft.com/dotnet/aspnet:8.0
+FROM mcr.microsoft.com/dotnet/aspnet:9.0
 WORKDIR /app
 
 # Copiar Backend publicado
