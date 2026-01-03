@@ -101,23 +101,21 @@ builder.Services.AddScoped<IUtilityTools, UtilityTools>(); // Agregamos el servi
 builder.Services.AddScoped<IUserHelper, UserHelper>(); // Agregamos el servicio UserHelper
 builder.Services.AddScoped<IFileStorage, FileStorage>(); // Agregamos el servicio FileStorage
 
-var app = builder.Build();
-
 //Inicio de Area de los Serviciios
-app.Services.AddCors(options =>
+builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowSpecificOrigin", builder =>
+    options.AddPolicy("AllowSpecificOrigin", corsBuilder =>
     {
-        string allowedOrigins = app.Environment.IsProduction() 
-            ? "http://localhost:8080" // En producción/Docker
-            : "https://localhost:7100"; // En desarrollo local
+        string allowedOrigins = "http://localhost:8080"; // Docker/Producción
         
-        builder.WithOrigins(allowedOrigins)
+        corsBuilder.WithOrigins(allowedOrigins)
              .AllowAnyHeader()
              .AllowAnyMethod()
              .WithExposedHeaders(new string[] { "Totalpages", "Counting" });
     });
 });
+
+var app = builder.Build();
 
 SeedData(app);
 
@@ -155,21 +153,3 @@ app.MapControllers();
 app.MapFallbackToFile("index.html");
 
 app.Run();
-
-// M�todo para abrir el navegador
-static void OpenBrowser(string url)
-{
-    try
-    {
-        var psi = new System.Diagnostics.ProcessStartInfo
-        {
-            FileName = url,
-            UseShellExecute = true
-        };
-        System.Diagnostics.Process.Start(psi);
-    }
-    catch (Exception ex)
-    {
-        Console.WriteLine($"Error al abrir el navegador: {ex.Message}");
-    }
-}
