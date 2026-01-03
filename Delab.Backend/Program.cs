@@ -101,8 +101,10 @@ builder.Services.AddScoped<IUtilityTools, UtilityTools>(); // Agregamos el servi
 builder.Services.AddScoped<IUserHelper, UserHelper>(); // Agregamos el servicio UserHelper
 builder.Services.AddScoped<IFileStorage, FileStorage>(); // Agregamos el servicio FileStorage
 
+var app = builder.Build();
+
 //Inicio de Area de los Serviciios
-builder.Services.AddCors(options =>
+app.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin", builder =>
     {
@@ -116,8 +118,6 @@ builder.Services.AddCors(options =>
              .WithExposedHeaders(new string[] { "Totalpages", "Counting" });
     });
 });
-
-var app = builder.Build();
 
 SeedData(app);
 
@@ -137,8 +137,6 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
     app.UseSwagger();
     app.UseSwaggerUI();
-    string swaggerUrl = "https://localhost:7254/swagger"; // URL de Swagger
-    Task.Run(() => OpenBrowser(swaggerUrl));
 }
 
 //Llamar el Servicio de CORS
