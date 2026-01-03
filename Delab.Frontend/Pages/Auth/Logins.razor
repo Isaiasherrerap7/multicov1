@@ -1,0 +1,97 @@
+@page "/logins"
+@layout Delab.Frontend.Layout.LoginLayout
+
+<MudGrid Class="ma-0" Spacing="0" Style="height: 100vh;">
+    <!-- PANEL IZQUIERDO -->
+    <MudItem xs="12" md="6" Class="left-pane">
+        <MudStack Spacing="4" Class="pa-8">
+            <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="3">
+                <MudIcon Icon="@Icons.Material.Filled.Shield" Size="Size.Large" />
+                <MudText Typo="Typo.h4"><b>SGAT</b></MudText>
+            </MudStack>
+
+            <MudText Typo="Typo.body1">
+                Sistema de Gestión de Accidentes de Tránsito
+            </MudText>
+
+            <MudText Typo="Typo.h5">
+                <b>Plataforma profesional para la gestión integral de expedientes de accidentes de tránsito.</b>
+            </MudText>
+
+            <MudText Typo="Typo.body1">
+                Optimiza el flujo de trabajo desde la apertura hasta el cierre de casos.
+            </MudText>
+
+            <MudList T="string">
+                <MudListItem Icon="@Icons.Material.Filled.Circle" IconSize="Size.Small" Dense="true">
+                    Gestión completa de expedientes
+                </MudListItem>
+                <MudListItem Icon="@Icons.Material.Filled.Circle" IconSize="Size.Small" Dense="true">
+                    Seguridad y control de acceso
+                </MudListItem>
+                <MudListItem Icon="@Icons.Material.Filled.Circle" IconSize="Size.Small" Dense="true">
+                    Seguimiento en tiempo real
+                </MudListItem>
+            </MudList>
+        </MudStack>
+    </MudItem>
+
+    <!-- PANEL DERECHO -->
+    <MudItem xs="12" md="6" Class="right-pane">
+        <MudStack Spacing="4" Class="mud-width-full" Style="max-width: 400px; margin: auto;">
+            <MudText Typo="Typo.h4" GutterBottom="true"><b>Acceso al Sistema</b></MudText>
+
+            <MudText Typo="Typo.body1" Class="mb-4">
+                Ingresa tus credenciales para acceder a la plataforma
+            </MudText>
+
+            <MudTextField T="string"
+                          Label="Correo Electrónico"
+                          Variant="Variant.Outlined"
+                          Adornment="Adornment.Start"
+                          AdornmentIcon="@Icons.Material.Filled.Mail"
+                          AdornmentColor="Color.Inherit"
+                          Placeholder="correo@empresa.com" />
+
+            <MudTextField T="string"
+                          Label="Contraseña"
+                          Variant="Variant.Outlined"
+                          @bind-Value="Password"
+                          InputType="@PasswordInput"
+                          Adornment="Adornment.Start"
+                          AdornmentColor="Color.Inherit"
+                          OnAdornmentClick="TogglePasswordVisibility"
+                          AdornmentAriaLabel="Mostrar u ocultar contraseña"
+                          AdornmentIcon="@PasswordVisibilityIcon" />
+
+            <MudButton Variant="Variant.Filled"
+                       Color="Color.Primary"
+                       FullWidth="true"
+                       Size="Size.Large"
+                       Class="mt-4">
+                Iniciar Sesión
+            </MudButton>
+
+            <MudText Typo="Typo.body2" Align="Align.Center" Class="mt-4">
+                ¿Necesitas ayuda? Contacta al administrador del sistema.
+            </MudText>
+        </MudStack>
+    </MudItem>
+</MudGrid>
+
+@code {
+
+    private string Password { get; set; } = "password123";
+    private bool isPasswordVisible;
+    private InputType PasswordInput = InputType.Password;
+    private string PasswordVisibilityIcon = Icons.Material.Filled.VisibilityOff;
+
+    private void TogglePasswordVisibility()
+    {
+        isPasswordVisible = !isPasswordVisible;
+        PasswordInput = isPasswordVisible ? InputType.Text : InputType.Password;
+        PasswordVisibilityIcon = isPasswordVisible ? Icons.Material.Filled.Visibility : Icons.Material.Filled.VisibilityOff;
+    }
+}
+
+

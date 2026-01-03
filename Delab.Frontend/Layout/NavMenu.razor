@@ -1,0 +1,22 @@
+﻿<MudNavMenu Color="Color.Surface">
+    @* <MudNavLink Href="/" Icon="@Icons.Material.Filled.Dashboard" IconColor="Color.Surface">Inicio</MudNavLink> *@
+    <AuthorizeView Roles="Admin"> 
+        <Authorized>
+    <MudNavGroup Title="Control Sistema" Icon="@Icons.Material.Filled.Dashboard" IconColor="Color.Surface" Expanded="false">
+        <MudNavLink Href="/softplans" Icon="@Icons.Material.Filled.Checklist" IconColor="Color.Info">Planes</MudNavLink>
+        <MudNavLink Href="/corporations" Icon="@Icons.Material.Filled.Checklist" IconColor="Color.Info">Corporacion</MudNavLink>
+        <MudNavLink Href="/managers" Icon="@Icons.Material.Filled.Checklist" IconColor="Color.Info">Managers</MudNavLink>
+    </MudNavGroup>
+    <MudNavGroup Title="Pruebas Isla" Icon="@Icons.Material.Filled.Dashboard" IconColor="Color.Surface" Expanded="false">
+        <MudNavLink Href="/islas" Icon="@Icons.Material.Filled.Checklist" IconColor="Color.Info">Isla</MudNavLink>
+        <MudNavLink Href="/islasmen" Icon="@Icons.Material.Filled.Checklist" IconColor="Color.Info">Islainicio</MudNavLink>
+        <MudNavLink Href="/Comprobante" Icon="@Icons.Material.Filled.Checklist" IconColor="Color.Info">Comprobantes</MudNavLink>
+    </MudNavGroup>
+        </Authorized>
+    </AuthorizeView>
+
+</MudNavMenu>
+
+
+
+

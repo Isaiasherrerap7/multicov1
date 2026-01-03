@@ -1,0 +1,162 @@
+﻿@using System.Globalization
+@using Delab.Shared
+@using Delab.Shared.Entities
+@using Delab.Frontend.Pages.Isla
+
+@page "/islas"
+
+// Título y versión del módulo
+<MudText Typo="Typo.h5">Maestro de Planes Comerciales Isla</MudText>
+<MudSpacer />
+<MudText style="font-size:x-small; color:cadetblue">vers. @Version</MudText>
+
+<MudGrid Spacing="2">
+    <!-- Tabla de planes comerciales -->
+    <MudItem xs="12">
+        <MudPaper Elevation="4" Class="d-flex flex-column mud-width-full pa-2">
+            <div style="position: relative;">
+                <MudTable T="SoftPlan" Items="SoftPlans" Hover="true" Dense="true" Height="250px" @ref="TableRef">
+                    <ToolBarContent>
+                        <MudSpacer />
+                        <MudTextField T="string" @bind-Value="SearchString" Label="Buscar" AdornmentIcon="@Icons.Material.Filled.Search" Adornment="Adornment.Start" Immediate="true" IconSize="Size.Small" Class="mt-0" />
+                    </ToolBarContent>
+                    <HeaderContent>
+                        <MudTh>Nombre</MudTh>
+                        <MudTh>Precio</MudTh>
+                        <MudTh>Meses</MudTh>
+                        <MudTh>Clinicas</MudTh>
+                        <MudTh>Activo</MudTh>
+                        <MudTh>Acciones</MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd DataLabel="Nombre">@context.Name</MudTd>
+                        <MudTd DataLabel="Precio">@context.Price.ToString("C", new CultureInfo("es-CO"))</MudTd>
+                        <MudTd DataLabel="Meses">@context.Meses</MudTd>
+                        <MudTd DataLabel="Clinicas">@context.ClinicsCount</MudTd>
+                        <MudTd DataLabel="Activo">
+                            @if (context.Active)
+                            {
+                                <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Success" Size="Size.Small" />
+                            }
+                            else
+                            {
+                                <MudIcon Icon="@Icons.Material.Filled.HighlightOff" Color="Color.Error" Size="Size.Small" />
+                            }
+                        </MudTd>
+                        <!-- Botones de acción: editar y borrar -->
+                        <MudTd DataLabel="Acciones">
+                            <div style="display: flex; gap: 8px;">
+                                <MudIconButton Icon="@Icons.Material.Filled.Edit" Size="Size.Small" OnClick="@(() => EditSoftPlan(context))" Color="Color.Warning" Variant="MudBlazor.Variant.Outlined" />
+                                <MudIconButton Icon="@Icons.Material.Filled.Delete" Size="Size.Small" OnClick="@(() => DeleteSoftPlan(context.SoftPlanId))" Color="Color.Error" Variant="MudBlazor.Variant.Outlined" />
+                            </div>
+                        </MudTd>
+                    </RowTemplate>
+                    <PagerContent>
+                        <MudTablePager />
+                    </PagerContent>
+                </MudTable>
+            </div>
+        </MudPaper>
+    </MudItem>
+    <!-- Botones principales para crear, guardar y cancelar -->
+    <MudItem xs="12">
+        <MudPaper Elevation="4" Class="d-flex flex-column mud-width-full pa-1">
+            <MudStack Row="true" AlignItems="MudBlazor.AlignItems.Center" Justify="Justify.FlexStart">
+                <MudButton Variant="MudBlazor.Variant.Filled" Size="Size.Small" Color="Color.Primary" OnClick="NewSoftPlan" Class="px-3 py-1" EndIcon="fa-solid fa-file">Nuevo</MudButton>
+                <MudSpacer/>
+                <MudButton Variant="MudBlazor.Variant.Filled" Disabled="!IsEditing" OnClick="SaveSoftPlan" Size="Size.Small" Color="Color.Success" Class="px-3 py-1" EndIcon="fa-solid fa-floppy-disk">Guardar</MudButton>
+                <MudButton Variant="MudBlazor.Variant.Filled" Disabled="!IsEditing" OnClick="CancelEdit" Size="Size.Small" Color="Color.Error" Class="px-3 py-1" EndIcon="fa-solid fa-x">Cancelar</MudButton>
+            </MudStack>
+        </MudPaper>
+    </MudItem>
+    <!-- Formulario de edición/creación extraído a un componente -->
+    <MudItem xs="12">
+        <SoftPlanForm Model="EditModel" IsEditing="IsEditing" />
+    </MudItem>
+</MudGrid>
+
+@code {
+    // Versión del módulo
+    private string Version = "1.0";
+    // Lista de planes comerciales en memoria
+    private List<SoftPlan> SoftPlans = new();
+    // Modelo para edición/creación
+    private SoftPlan EditModel = new();
+    // Estado de edición
+    private bool IsEditing = false;
+    // Cadena de búsqueda
+    private string SearchString = string.Empty;
+    // Referencia a la tabla MudBlazor
+    private MudTable<SoftPlan> TableRef;
+
+    // Inicializa los datos de ejemplo al cargar la página
+    protected override async Task OnInitializedAsync() => await LoadSoftPlans();
+
+    // Carga datos de ejemplo en memoria
+    private async Task LoadSoftPlans()
+    {
+        SoftPlans = new List<SoftPlan>
+        {
+            new SoftPlan { SoftPlanId = 1, Name = "Básico Isla", Price = 120, Meses = 6, ClinicsCount = 2, Active = true },
+            new SoftPlan { SoftPlanId = 2, Name = "Profesional Isla", Price = 300, Meses = 12, ClinicsCount = 5, Active = true },
+            new SoftPlan { SoftPlanId = 3, Name = "Premium Isla", Price = 700, Meses = 24, ClinicsCount = 15, Active = false }
+        };
+        await Task.CompletedTask;
+    }
+
+    // Prepara el modelo para crear un nuevo plan
+    private void NewSoftPlan()
+    {
+        EditModel = new SoftPlan();
+        IsEditing = true;
+    }
+
+    // Prepara el modelo para editar un plan existente
+    private void EditSoftPlan(SoftPlan plan)
+    {
+        EditModel = new SoftPlan
+        {
+            SoftPlanId = plan.SoftPlanId,
+            Name = plan.Name,
+            Price = plan.Price,
+            Meses = plan.Meses,
+            ClinicsCount = plan.ClinicsCount,
+            Active = plan.Active
+        };
+        IsEditing = true;
+    }
+
+    // Guarda el plan (nuevo o editado) en la lista en memoria
+    private async Task SaveSoftPlan()
+    {
+        if (EditModel.SoftPlanId == 0)
+        {
+            // Asigna un nuevo ID incremental
+            EditModel.SoftPlanId = SoftPlans.Any() ? SoftPlans.Max(x => x.SoftPlanId) + 1 : 1;
+            SoftPlans.Add(EditModel);
+        }
+        else
+        {
+            // Actualiza el plan existente
+            var index = SoftPlans.FindIndex(x => x.SoftPlanId == EditModel.SoftPlanId);
+            if (index != -1) SoftPlans[index] = EditModel;
+        }
+        IsEditing = false;
+        EditModel = new SoftPlan();
+        await Task.CompletedTask;
+    }
+
+    // Cancela la edición y limpia el modelo
+    private void CancelEdit()
+    {
+        EditModel = new SoftPlan();
+        IsEditing = false;
+    }
+
+    // Elimina el plan seleccionado de la lista
+    private async Task DeleteSoftPlan(int id)
+    {
+        SoftPlans.RemoveAll(x => x.SoftPlanId == id);
+        await Task.CompletedTask;
+    }
+}

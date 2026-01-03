@@ -1,0 +1,114 @@
+﻿@using System.Globalization
+
+@*
+    Componente para el cuerpo principal de la página.
+    Se divide en dos columnas: la estructura presupuestal a la izquierda y los detalles a la derecha.
+*@
+<MudGrid Spacing="4">
+    @* Columna Izquierda: Estructura Presupuestal *@
+    <MudItem xs="12" sm="4" md="3">
+        <MudPaper Outlined="true" Class="pa-0">
+            <MudToolBar Class="mud-theme-primary" Style="color: white; height: 48px;">
+                <MudIcon Icon="@Icons.Material.Filled.AccountTree" />
+                <MudText Typo="Typo.subtitle1" Class="ml-2">Estructura Presupuestal</MudText>
+                <MudSpacer />
+                <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowDown" />
+            </MudToolBar>
+            <div class="pa-2" style="max-height: 60vh; overflow-y: auto;">
+                <MudTreeView T="string" ExpandOnClick="true">
+                    <MudTreeViewItem Value="@("COMPROBANTES PRESUPUESTALES")" Icon="@Icons.Material.Filled.Folder" Expanded="true">
+                        <MudTreeViewItem Value="@("PRESUPUESTO APROBADO")" Icon="@Icons.Material.Filled.Folder" Expanded="true">
+                            <MudTreeViewItem Value="@("Presupuesto aprobado")" Icon="@Icons.Material.Filled.Description" />
+                            <MudTreeViewItem Value="@("Adiciones presupuestales")" Icon="@Icons.Material.Filled.Description" />
+                            <MudTreeViewItem Value="@("Reducciones presupuestales")" Icon="@Icons.Material.Filled.Description" Selected="true" />
+                            <MudTreeViewItem Value="@("Traslados presupuestales")" Icon="@Icons.Material.Filled.Description" />
+                            <MudTreeViewItem Value="@("Aplazamiento / Desaplazamientos")" Icon="@Icons.Material.Filled.Description" />
+                        </MudTreeViewItem>
+                    </MudTreeViewItem>
+                    <MudTreeViewItem Value="@("EJECUCIÓN DEL PRESUPUESTO")" Icon="@Icons.Material.Filled.Folder" />
+                </MudTreeView>
+            </div>
+        </MudPaper>
+    </MudItem>
+
+    @* Columna Derecha: Detalles del Documento y Tabla *@
+    <MudItem xs="12" sm="8" md="9">
+        <MudPaper Outlined="true" Class="pa-4">
+            <div class="d-flex justify-space-between align-center mb-4">
+                <MudText Typo="Typo.h6" Class="d-flex align-center"><MudIcon Icon="@Icons.Material.Filled.Description" Class="mr-2" Color="Color.Primary" /> Encabezado del Documento</MudText>
+                <MudChip T="string" Icon="@Icons.Material.Filled.Info" Color="Color.Info" Size="Size.Small" Label="true">Solo Lectura</MudChip>
+            </div>
+            <MudGrid Spacing="2">
+                <MudItem xs="12" sm="6" md="3">
+                    <MudDatePicker Label="Fecha" @bind-Date="_fecha" Variant="Variant.Outlined" />
+                </MudItem>
+                <MudItem xs="12" sm="6" md="3">
+                    <MudTextField T="string" Label="Documento" Value="@("0000000545")" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Numbers" Variant="Variant.Outlined" />
+                </MudItem>
+                <MudItem xs="12" sm="6" md="4">
+                    <MudTextField T="string" Label="Nit / c.c." Value="@("890984043")" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Badge" Variant="Variant.Outlined" />
+                </MudItem>
+                <MudItem xs="12" sm="6" md="2">
+                    <MudTextField T="string" Label="DV" Value="@("8")" Variant="Variant.Outlined" />
+                </MudItem>
+                <MudItem xs="12">
+                    <MudTextField T="string" Label="Municipio" Value="@("MUNICIPIO DE DONMATIAS")" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.LocationCity" Variant="Variant.Outlined" />
+                </MudItem>
+                <MudItem xs="12">
+                    <MudTextField T="string" Label="Observación" Lines="3" Value=@("RESOLUCIÓN NRO 298 DEL 5 DE AGOSTO DE 2025, POR MEDIO DEL CUAL SE AUTORIZA EL DISFRUTE DE UN PERIODO DE VACACIONES A UN SERVIDOR PÚBLICO EN PROVISIONALIDAD.") Variant="Variant.Outlined" />
+                </MudItem>
+            </MudGrid>
+        </MudPaper>
+
+        <MudPaper Outlined="true" Class="mt-4 pa-0">
+            <MudTabs Elevation="0" Rounded="true" PanelClass="pa-4">
+                <MudTabPanel Text="DETALLE PRESUPUESTAL" Icon="@Icons.Material.Filled.ListAlt">
+                    <MudTable Items="_detalles" Hover="true" Dense="true">
+                        <HeaderContent>
+                            <MudTh>Código</MudTh>
+                            <MudTh>Nombre del Rubro</MudTh>
+                            <MudTh Style="text-align:right">Valor</MudTh>
+                            <MudTh Style="text-align:center">Doc. origen</MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Código">@context.Codigo</MudTd>
+                            <MudTd DataLabel="Nombre del Rubro">@context.NombreRubro</MudTd>
+                            <MudTd DataLabel="Valor" Style="text-align:right">@context.Valor.ToString("N2", new CultureInfo("es-CO"))</MudTd>
+                            <MudTd DataLabel="Doc. origen" Style="text-align:center">
+                                <MudSwitch T="bool" @bind-Value="@context.DocOrigen" Color="Color.Primary" />
+                            </MudTd>
+                        </RowTemplate>
+                        <FooterContent>
+                            <MudTd colspan="2" />
+                            <MudTd Style="text-align:right"><b>Total DB:</b> @(_detalles.Sum(d => d.Valor).ToString("N2", new CultureInfo("es-CO")))</MudTd>
+                            <MudTd Style="text-align:right"><b>Total CR:</b> 0,00</MudTd>
+                        </FooterContent>
+                    </MudTable>
+                    <div class="d-flex justify-end mt-4 gap-4">
+                        <MudButton Variant="Variant.Text" StartIcon="@Icons.Material.Filled.Edit" Color="Color.Primary">EDITA DETALLE...</MudButton>
+                        <MudButton Variant="Variant.Text" StartIcon="@Icons.Material.Filled.Share" Color="Color.Primary">DISPERSIÓN POR C. COSTOS</MudButton>
+                    </div>
+                </MudTabPanel>
+                <MudTabPanel Text="VISORES: PRESUPUESTAL CONTABLE" Icon="@Icons.Material.Filled.Visibility">
+                    <MudText>Contenido del visor presupuestal contable.</MudText>
+                </MudTabPanel>
+            </MudTabs>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+@code {
+    private DateTime? _fecha = new DateTime(2025, 8, 15);
+    private List<DetallePresupuestalModel> _detalles = new();
+
+    protected override void OnInitialized()
+    {
+        // Carga de datos de ejemplo para la tabla
+        _detalles = new List<DetallePresupuestalModel>
+        {
+            new DetallePresupuestalModel { Codigo = "2.1.1.01.01.00", NombreRubro = "PRIMA DE VACACIONES", Valor = 1228887.00m, DocOrigen = false },
+            new DetallePresupuestalModel { Codigo = "2.1.1.01.03.00", NombreRubro = "VACACIONES", Valor = 1474664.00m, DocOrigen = false },
+            new DetallePresupuestalModel { Codigo = "2.1.1.01.03.00", NombreRubro = "BONIFICACION ESPECIAL DE RECREACION", Valor = 144674.00m, DocOrigen = false }
+        };
+    }
+}

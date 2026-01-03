@@ -1,0 +1,13 @@
+﻿@*
+    Componente para la barra de estado inferior.
+    Muestra información contextual como el modo de visualización y el estado del documento.
+*@
+<div class="voucher-statusbar" style="position: sticky; bottom: 0; background-color: var(--mud-palette-surface); color: var(--mud-palette-text-primary); border-top: 1px solid var(--mud-palette-divider); z-index: 100; height: 48px; display: flex; align-items: center; padding: 0 16px;">
+    <MudIcon Icon="@Icons.Material.Filled.Circle" Style="color: red;" Size="Size.Small" />
+    <MudChip T="string" Variant="Variant.Text" Size="Size.Small">[Modo Visualización...]</MudChip>
+    <MudChip T="string" Color="Color.Info" Size="Size.Small" Label="true">6: Certificados de Disponibilidad emitidos</MudChip>
+    <MudChip T="string" Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Success" Size="Size.Small" Label="true">[Existente]</MudChip>
+    <div style="flex-grow: 1;"></div>
+    <MudIconButton Icon="@Icons.Material.Filled.Schedule" Size="Size.Small" />
+    <MudIconButton Icon="@Icons.Material.Filled.Info" Size="Size.Small" />
+</div>

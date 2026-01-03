@@ -1,0 +1,90 @@
+@page "/islasmen"
+@using System.Collections.Generic
+
+<MudPaper Elevation="0" Class="pt-1 px-6 pb-6">
+    <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="pa-0">
+        <MudStack Spacing="4">
+            <!-- Header Section -->
+            <MudStack Spacing="2">
+                <MudText Typo="Typo.h4"><b>Panel de Control</b></MudText>
+                <MudText Typo="Typo.body1">Resumen general del sistema de expedientes</MudText>
+            </MudStack>
+
+            <!-- Summary cards -->
+            <MudGrid Spacing="3">
+                @foreach (var s in Summaries)
+                {
+                    <MudItem xs="12" sm="6" md="3">
+                        <MudCard Elevation="1" Class="pa-4">
+                            <MudCardContent>
+                                <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween">
+                                    <div>
+                                        <MudText Typo="Typo.caption" Class="mb-1">@s.Title</MudText>
+                                        <MudText Typo="Typo.h5"><b>@s.Value</b></MudText>
+                                        <MudText Typo="Typo.caption" Class="mt-1">@s.Subtitle</MudText>
+                                    </div>
+                                    <MudPaper Elevation="0" Class="d-flex align-center justify-center" Style="@IconStyle()">
+                                        <MudIcon Icon="@s.Icon" Size="Size.Medium" Color="@s.IconColor" />
+                                    </MudPaper>
+                                </MudStack>
+                            </MudCardContent>
+                        </MudCard>
+                    </MudItem>
+                }
+            </MudGrid>
+
+            <!-- Activity + Alerts -->
+            <MudGrid Spacing="3">
+                <MudItem xs="12" lg="7">
+                    <MudCard Elevation="1" Class="pa-4">
+                        <MudCardContent>
+                            <MudStack Spacing="3">
+                                <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween">
+                                    <MudText Typo="Typo.h6"><b>Actividad Reciente</b></MudText>
+                                    <MudText Typo="Typo.caption">Ver todo</MudText>
+                                </MudStack>
+
+                                <MudList T="string">
+                                    @foreach (var a in Activities)
+                                    {
+                                        <MudListItem Icon="@Icons.Material.Filled.Person" IconSize="Size.Small" Text="@a.Title" SecondaryText="@a.When" Class="px-2 py-3" />
+                                        <MudDivider />
+                                    }
+                                </MudList>
+                            </MudStack>
+                        </MudCardContent>
+                    </MudCard>
+                </MudItem>
+
+                <MudItem xs="12" lg="5">
+                    <MudCard Elevation="1" Class="pa-4">
+                        <MudCardContent>
+                            <MudStack Spacing="3">
+                                <MudText Typo="Typo.h6"><b>Alertas y Notificaciones</b></MudText>
+
+                                <MudStack Spacing="2">
+                                    @foreach (var alert in Alerts)
+                                    {
+                                        <MudAlert Severity="@alert.Severity" ContentAlignment="HorizontalAlignment.Left" Class="d-flex align-center">
+                                            <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween" Style="width: 100%;">
+                                                <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
+                                                    <MudStack>
+                                                        <MudText Typo="Typo.subtitle2"><b>@alert.Title</b></MudText>
+                                                        <MudText Typo="Typo.caption">@alert.Description</MudText>
+                                                    </MudStack>
+                                                </MudStack>
+
+                                                <MudChip T="string" Color="@GetChipColor(alert.Severity)" Size="Size.Small" Text="@alert.Count.ToString()" />
+                                            </MudStack>
+                                        </MudAlert>
+                                    }
+                                </MudStack>
+                            </MudStack>
+                        </MudCardContent>
+                    </MudCard>
+                </MudItem>
+            </MudGrid>
+        </MudStack>
+    </MudContainer>
+</MudPaper>
+

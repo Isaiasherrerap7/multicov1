@@ -1,0 +1,1 @@
+﻿namespace Delab.Frontend.Pages.SoftPlan;

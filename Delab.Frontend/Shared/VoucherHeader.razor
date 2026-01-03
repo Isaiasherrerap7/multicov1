@@ -1,0 +1,39 @@
+﻿@*
+    Componente que representa la cabecera completa del manejador de comprobantes.
+    Incluye la barra de título y la barra de herramientas con filtros y acciones.
+*@
+<MudPaper Elevation="0" Class="mud-theme-primary pa-3 d-flex align-center" Style="color: white; min-height: 64px;">
+    <MudText Typo="Typo.h6">Comprobantes: [89 - PRESUPUESTO 2025] [6: Certificados de Disponibilidad emitidos]</MudText>
+    <MudSpacer />
+    <div class="d-flex flex-column align-end">
+        <MudText Typo="Typo.caption">Prop.: 1017166740 MARLY MARCELA MONTES</MudText>
+        <MudText Typo="Typo.caption">MUÑOZ</MudText>
+    </div>
+    <MudChip T="string" Icon="@Icons.Material.Filled.Lock" Color="Color.Success" Size="Size.Small" Class="ml-4" Label="true">Bloqueado</MudChip>
+    <MudButton Variant="Variant.Text" StartIcon="@Icons.Material.Filled.Close" Color="Color.Inherit" Class="ml-2">CERRAR</MudButton>
+</MudPaper>
+
+<MudToolBar Class="pa-2" Style="background-color: var(--mud-palette-surface); color: var(--mud-palette-text-primary); border-bottom: 1px solid var(--mud-palette-divider);">
+    <MudText Typo="Typo.body2" Class="d-flex align-center"><MudIcon Icon="@Icons.Material.Filled.Schedule" Class="mr-2" /> Fecha de Bloqueo: 30/09/2022</MudText>
+    <MudSpacer />
+    <MudSelect T="string" Label="Mes" Variant="Variant.Outlined" Dense="true" Margin="Margin.Dense" Value="@("Agosto")" Style="width: 150px;">
+        <MudSelectItem Value="@("Agosto")" />
+        <MudSelectItem Value="@("Septiembre")" />
+    </MudSelect>
+    <MudNumericField T="int" Label="Año" Variant="Variant.Outlined" Margin="Margin.Dense" Value="2025" Style="width: 120px;" Class="ml-2" />
+
+    <div class="d-flex align-center ml-4">
+        <MudIconButton Icon="@Icons.Material.Filled.FirstPage" Size="Size.Small" />
+        <MudIconButton Icon="@Icons.Material.Filled.NavigateBefore" Size="Size.Small" />
+        <MudText Typo="Typo.body2" Class="mx-2">41 DE 41</MudText>
+        <MudIconButton Icon="@Icons.Material.Filled.NavigateNext" Size="Size.Small" />
+        <MudIconButton Icon="@Icons.Material.Filled.LastPage" Size="Size.Small" />
+    </div>
+
+    <div class="ml-4">
+        <MudIconButton Icon="@Icons.Material.Filled.Add" Color="Color.Primary" />
+        <MudIconButton Icon="@Icons.Material.Filled.Save" Color="Color.Primary" />
+        <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" />
+        <MudIconButton Icon="@Icons.Material.Filled.Print" Color="Color.Default" />
+    </div>
+</MudToolBar>

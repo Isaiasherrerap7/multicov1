@@ -1,0 +1,36 @@
+@using Delab.Shared.Entities
+@using Microsoft.AspNetCore.Components
+@using MudBlazor
+
+<!-- Componente reutilizable para el formulario de edición/creación de SoftPlan en Isla -->
+<MudPaper Elevation="4" Class="d-flex flex-column mud-width-full pa-2 mb-4">
+    <MudGrid Spacing="1">
+        <!-- Campo Nombre -->
+        <MudItem xs="6">
+            <MudTextField T="string" Variant="Variant.Outlined" Margin="Margin.Dense" Disabled="!IsEditing" @bind-Value="Model.Name" Label="Nombre" MaxLength="50" Placeholder="Máx. 50 caracteres" />
+        </MudItem>
+        <!-- Campo Precio -->
+        <MudItem xs="3">
+            <MudTextField T="decimal" Variant="Variant.Outlined" Margin="Margin.Dense" Disabled="!IsEditing" @bind-Value="Model.Price" Label="Precio" />
+        </MudItem>
+        <!-- Campo Meses -->
+        <MudItem xs="3">
+            <MudTextField T="int" Variant="Variant.Outlined" Margin="Margin.Dense" Disabled="!IsEditing" @bind-Value="Model.Meses" Label="Meses" />
+        </MudItem>
+        <!-- Campo Clínicas -->
+        <MudItem xs="3">
+            <MudTextField T="int" Variant="Variant.Outlined" Margin="Margin.Dense" Disabled="!IsEditing" @bind-Value="Model.ClinicsCount" Label="Clinicas" />
+        </MudItem>
+        <!-- Campo Activo -->
+        <MudItem xs="3">
+            <MudCheckBox T="bool" Label="Activo" Color="Color.Primary" Disabled="!IsEditing" @bind-Value="Model.Active" />
+        </MudItem>
+    </MudGrid>
+</MudPaper>
+
+@code {
+    // Modelo de datos para el formulario
+    [Parameter] public SoftPlan Model { get; set; } = new();
+    // Indica si el formulario está en modo edición
+    [Parameter] public bool IsEditing { get; set; }
+}
